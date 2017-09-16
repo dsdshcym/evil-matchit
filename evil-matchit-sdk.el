@@ -276,4 +276,17 @@ is-function-exit-point could be unknown status"
       (setq start (match-end 0)))
     count))
 
+(defun evilmi-whitespace-p (pos)
+  (save-excursion
+    (goto-char pos)
+    (memq (following-char) '(32 9 10 13))))
+
+(defun evilmi-comment-p (pos)
+  "Check character at POS is comment."
+  (let* ((fontfaces (if (> pos 0) (get-text-property pos 'face))))
+    (if (not (listp fontfaces))
+        (setf fontfaces (list fontfaces)))
+    (evilnc--check-fonts fontfaces
+                         '(font-lock-comment-face
+                           font-lock-comment-delimiter-face))))
 (provide 'evil-matchit-sdk)

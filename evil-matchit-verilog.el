@@ -59,6 +59,7 @@
 ;;         #200 release dff.n2.rst;
 ;;      end
 ;; endmodule
+;; @see http://www.verilog.com/VerilogBNF.html for formal syntax
 ;; }}
 
 ;; should try next howto, the purpose is avoid missing any howto
@@ -89,6 +90,28 @@
     ("begin" () "end")
     ("`ifn?def" "`else" "`endif" "MONOGAMY")
     ("`celldefine" () "`endcelldefine" "MONOGAMY")
+    ))
+
+(defun evilmi-verilog-token-init ()
+  (let* ((rlt (list :pos (point))))
+    rlt))
+
+(defun evilmi-verilog-token-next (st)
+  (message "evilmi-verilog-token-next called")
+  (let* (ch
+         tk
+         (p (plist-get st :pos)))
+    (while (or (evilmi-whitespace-p p)
+               (evilmi-comment-p p))
+      (setq p (1+ p)))
+    (message "p=%s" p)
+    ))
+
+(defun evilmi-verilog-scan ()
+  (interactive)
+  (let* ((st (evilmi-verilog-token-init)))
+    (message "st=%s %s" st (plist-get st :pos))
+    (evilmi-verilog-token-next st)
     ))
 
 ;;;###autoload
